@@ -1,0 +1,21 @@
+{
+    "name": "getulio-bot",
+    "version": "0.1.0",
+    "description": "Um bot do discord com grande competencia.",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js"
+    },
+    "author": "Victor Neves Silva",
+    "license": "MIT",
+    "dependencies": {
+        "discord.js": "11.4.2",
+        "dotenv": "7.0.0",
+        "ffmpeg-static": "^2.4.0",
+        "node-opus": "0.3.1",
+        "youtube-search": "1.1.4",
+        "ytdl-core-discord": "1.0.3",
+        "fs": "0.0.1-security",
+        "enmap": "4.8.1"
+    }
+}
