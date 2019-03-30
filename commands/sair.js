@@ -1,0 +1,1 @@
+// Sai do canal atual

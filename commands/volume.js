@@ -1,0 +1,1 @@
+// Define o volume do bot

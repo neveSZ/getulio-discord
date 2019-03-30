@@ -1,0 +1,1 @@
+// Para a musica atual e remove todas as musicas da lista

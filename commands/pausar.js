@@ -1,0 +1,1 @@
+// Pausa a musica atual

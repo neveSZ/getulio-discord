@@ -1,0 +1,1 @@
+// Devolve um link para adicionar esse bot no discord
