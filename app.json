@@ -1,0 +1,20 @@
+{
+    "name": "Getulio Discord Bot",
+    "description": "Um bot do discord com grande competência",
+    "website": "https://github.com/neveSZ/getulio-discord",
+    "env": {
+        "AUTH_TOKEN": {
+            "description": "Token do discord. Pegue o token aqui: https://discordapp.com/developers/applications/"
+        }
+    },
+    "formation": {
+        "web": {
+            "quantity": 0,
+            "size": "free"
+        },
+        "worker": {
+            "quantity": 1,
+            "size": "free"
+        }
+    }
+}
