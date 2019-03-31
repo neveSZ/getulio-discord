@@ -8,6 +8,9 @@
         },
         "PREFIX": {
             "description": "Prefixo para os comandos do Bot"
+        },
+        "YTB_API_KEY": {
+            "description": "Chave da API do youtube. Pegue a chave aqui: https://console.developers.google.com"
         }
     },
     "formation": {
