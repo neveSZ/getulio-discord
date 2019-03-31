@@ -1,6 +1,6 @@
 // Entrar no canal de voz do usuario
 module.exports = {
-  run: async (client, message) => {
+  run: async (client, message, args) => {
     const voiceChannel = message.member.voiceChannel;
     // Verificar se o membro esta em um canal de voz
     if (!voiceChannel)
@@ -23,7 +23,7 @@ module.exports = {
         .then(
             connection => console.log(
                 '[LOG]', `Conectado no canal #${voiceChannel.name}`))
-        .catch(console.error('[ERROR]', 'Ocorreu um erro ao entrar no canal'));
+        .catch(console.error);
   },
   help: {
     name: 'entrar',
