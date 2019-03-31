@@ -1,6 +1,6 @@
 // Entrar no canal de voz do usuario
 module.exports = {
-  run: async (client, message, args) => {
+  run: async (client, message) => {
     const voiceChannel = message.member.voiceChannel;
     // Verificar se o membro esta em um canal de voz
     if (!voiceChannel)
