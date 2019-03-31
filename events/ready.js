@@ -6,6 +6,6 @@ module.exports = async (client) => {
           client.users.size} usuarios em ${client.guilds.size} servidor(es)`);
   // Status do bot
   client.user.setActivity(
-      'EU SEI TUDO!!!',
+      'eu sei tudo!!!',
       {type: 'STREAMING', url: 'https://www.twitch.tv/neveSZcs'});
 }

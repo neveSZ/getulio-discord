@@ -11,14 +11,13 @@ cmdFiles.forEach(f => {
   try {
     const props = require(`./commands/${f}`);
     if (f.split('.').slice(-1)[0] !== 'js') return;
-
     console.log('[LOG]', `Carregando o comando: ${props.help.name}`);
     if (props.init) {
       props.init(client);
     }
     client.commands.set(props.help.name, props);
   } catch (e) {
-    console.log('[LOG]', `Impossivel carregar o comando ${f}: ${e}`);
+    console.log('[LOG]', `Falha ao carregar o comando ${f}: ${e}`);
   }
 })
 
@@ -28,6 +27,7 @@ console.log('[LOG]', `Carregando ${evtFiles.length} eventos`);
 evtFiles.forEach(f => {
   const eventName = f.split('.')[0];
   const event = require(`./events/${f}`);
+  console.log('[LOG]', `Carregando o evento: ${eventName}`);
   client.on(eventName, event.bind(null, client));
 })
 
