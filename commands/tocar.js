@@ -7,6 +7,9 @@ var opts = {
     regionCode: "BR"
 };
 const ytdl = require("ytdl-core-discord");
+async function play(connection, url) {
+    connection.playOpusStream(await ytdl(url));
+}
 
 module.exports = {
     run: async (client, message, args) => {
@@ -43,6 +46,7 @@ module.exports = {
             if (!results[0])
                 return message.channel.send(`${message.author}\nNão encontrei resultados`);
 
+            // Listar opcoes    
             const embed = new Discord.RichEmbed().setTitle("**Selecione uma opção de 1 a 10**");
             for (var i = 0; i < results.length; i++) {
                 embed.addField(`**${i+1} - ** ${results[i].title}`, `${results[i].link}`);
@@ -51,6 +55,23 @@ module.exports = {
                 embed
             });
 
+            // Pegar a resposta do usuario com a opcao
+            const filter = msg => msg.author.id == message.author.id;
+            message.channel.awaitMessages(filter, {
+                    max: 1,
+                    time: 10000,
+                    errors: ['time']
+                })
+                .then(collected => {
+                    const option = collected.first().content - 1
+                    if (option < 0 || option > 9)
+                        return message.channel.send('Opção inválida');
+                    console.log('[LOG]', `Adicionado a lista ${results[option].link}`);
+                    play(message.guild.voiceConnection, results[option].link);
+                    const embedMsg = new Discord.RichEmbed().setTitle(`**Adicionado a lista: **${results[option].title}`).setDescription(results[option].link);
+                    message.channel.send(embedMsg);
+                })
+                .catch(collected => console.log('Não foi selecionada uma opção'));
 
         });
     },
