@@ -1,6 +1,8 @@
 require('dotenv').config();
 const Discord = require('discord.js');
-const {readdirSync} = require('fs');
+const {
+  readdirSync
+} = require('fs');
 const Enmap = require('enmap');
 const client = new Discord.Client();
 client.commands = new Enmap();
@@ -30,6 +32,8 @@ evtFiles.forEach(f => {
   client.on(eventName, event.bind(null, client));
 })
 
-client.on('error', (err) => {console.log('[ERRO]', err)});
+client.on('error', (err) => {
+  console.log('[ERRO]', err)
+});
 
 client.login(process.env.AUTH_TOKEN);

@@ -16,5 +16,9 @@ module.exports = {
     voiceChannel.leave();
     console.log('[LOG]', `Saiu do canal #${voiceChannel.name}`);
   },
-  help: {name: 'sair', description: 'Sair do canal de voz', usage: 'sair'}
+  help: {
+    name: 'sair',
+    description: 'Sair do canal de voz',
+    usage: 'sair'
+  }
 }

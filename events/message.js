@@ -11,20 +11,15 @@ module.exports = async (client, message) => {
 
   // Separar argumentos e comando
   const args =
-      message.content.slice(process.env.PREFIX.length).trim().split(/ +/g);
+    message.content.slice(process.env.PREFIX.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
   const cmd = client.commands.get(command);
 
   // Verificar se o comando esta disponivel
   if (!cmd) {
-    return await message.channel.send(
-        `${message.author}\nComando não disponível. Digite ${
-            process.env.PREFIX}ajuda para ver a lista de comandos.`);
+    return await message.channel.send(`${message.author}\nComando não disponível. Digite ${process.env.PREFIX}ajuda para ver a lista de comandos.`);
   };
 
-  console.log(
-      '[LOG]',
-      `${message.author.username} (${message.author.id}) executou o comando ${
-          cmd.help.name}`);
+  console.log('[LOG]', `${message.author.username} (${message.author.id}) executou o comando ${cmd.help.name}`);
   cmd.run(client, message, args);
 }
