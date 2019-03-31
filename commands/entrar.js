@@ -1,0 +1,1 @@
+// Entrar no canal de voz do usuario
