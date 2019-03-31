@@ -15,7 +15,12 @@ module.exports = async (client, message) => {
   const cmd = client.commands.get(command);
 
   // Verificar se o comando esta disponivel
-  if (!cmd) return;
+  if (!cmd) {
+    await message.channel.send(
+        `${message.author}\nComando não disponível. Digite ${
+            process.env.PREFIX}ajuda para ver a lista de comandos.`);
+    return;
+  };
 
   console.log(
       '[LOG]',
