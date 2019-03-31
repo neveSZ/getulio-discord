@@ -17,7 +17,7 @@ cmdFiles.forEach(f => {
     }
     client.commands.set(props.help.name, props);
   } catch (e) {
-    console.log('[LOG]', `Falha ao carregar o comando ${f}: ${e}`);
+    console.error('[ERRO]', `Falha ao carregar o comando ${f}: ${e}`);
   }
 })
 
@@ -30,6 +30,6 @@ evtFiles.forEach(f => {
   client.on(eventName, event.bind(null, client));
 })
 
-client.on('[ERRO]', (err) => {console.log('[ERRO]', err)});
+client.on('error', (err) => {console.log('[ERRO]', err)});
 
 client.login(process.env.AUTH_TOKEN);
