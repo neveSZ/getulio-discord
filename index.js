@@ -23,7 +23,6 @@ cmdFiles.forEach(f => {
 
 // Carregar eventos
 const evtFiles = readdirSync('./events/')
-console.log('[LOG]', `Carregando ${evtFiles.length} eventos`);
 evtFiles.forEach(f => {
   const eventName = f.split('.')[0];
   const event = require(`./events/${f}`);
