@@ -19,6 +19,7 @@
         "youtube-search": "^1.1.4",
         "ytdl-core-discord": "^1.0.3",
         "fs": "^0.0.1-security",
-        "enmap": "^4.8.2"
+        "enmap": "^4.8.2",
+        "prism-media": "^1.0.1"
     }
 }
