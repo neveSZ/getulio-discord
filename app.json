@@ -5,6 +5,9 @@
     "env": {
         "AUTH_TOKEN": {
             "description": "Token do discord. Pegue o token aqui: https://discordapp.com/developers/applications/"
+        },
+        "PREFIX": {
+            "description": "Prefixo para os comandos do Bot"
         }
     },
     "formation": {
