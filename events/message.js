@@ -1,5 +1,21 @@
-module.exports = async (client, message) => {
-  // Verificar se nao eh bot
+// cmd = 0 ainda estao sem funcao
+const cmdAjuda = 0;
+const cmdContinuar = 0;
+const cmdConvite = require('../commands/convite.js');
+const cmdEntrar = require('../commands/entrar.js');
+const cmdLista = 0;
+const cmdMisturar = 0;
+const cmdParar = 0;
+const cmdPausar = 0;
+const cmdPing = require('../commands/ping.js');
+const cmdPular = 0;
+const cmdRepetir = 0;
+const cmdSair = require('../commands/sair.js');
+const cmdTocar = require('../commands/tocar.js');
+const cmdVolume = 0;
+
+async function onMessage(client, message) {
+  // Verificar se eh bot
   if (message.author.bot) return;
 
   // Verificar se foi mensagem privada
@@ -10,16 +26,32 @@ module.exports = async (client, message) => {
   if (message.content.indexOf(process.env.PREFIX) !== 0) return;
 
   // Separar argumentos e comando
-  const args =
-    message.content.slice(process.env.PREFIX.length).trim().split(/ +/g);
-  const command = args.shift().toLowerCase();
-  const cmd = client.commands.get(command);
-
+  const command = message.content.toLowerCase().split(' ')[0].slice(process.env.PREFIX.length);
+  const args = message.content.toLowerCase().slice(command.length + process.env.PREFIX.length + 1);
+  console.log(args);
   // Verificar se o comando esta disponivel
-  if (!cmd) {
-    return await message.channel.send(`${message.author}\nComando não disponível. Digite ${process.env.PREFIX}ajuda para ver a lista de comandos.`);
-  };
-
-  console.log('[LOG]', `${message.author.username} (${message.author.id}) executou o comando ${cmd.help.name}`);
-  cmd.run(client, message, args);
+  switch (command) {
+    case 'convite':
+      cmdConvite(message);
+      break;
+    case 'entrar':
+      cmdEntrar(message);
+      break;
+    case 'ping':
+      cmdPing(message);
+      break;
+    case 'sair':
+      cmdSair(message);
+      break;
+    case 'tocar':
+      cmdTocar(message, args);
+      break;
+    default:
+      return message.channel.send(`${message.author}\nComando não disponível. Digite ${process.env.PREFIX}ajuda para ver a lista de comandos.`);
+      break;
+  }
+  console.log(`O usuario ${message.author.username}(${message.author.id}) executou o comando ${command}`);
 }
+
+
+module.exports = onMessage;

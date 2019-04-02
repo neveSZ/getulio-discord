@@ -1,39 +1,16 @@
 require('dotenv').config();
-const Discord = require('discord.js');
-const {
-  readdirSync
-} = require('fs');
-const Enmap = require('enmap');
-const client = new Discord.Client();
-client.commands = new Enmap();
-const cmdFiles = readdirSync('./commands/');
 
-// Carregar comandos
-cmdFiles.forEach(f => {
-  try {
-    const props = require(`./commands/${f}`);
-    if (f.split('.').slice(-1)[0] !== 'js') return;
-    console.log('[LOG]', `Carregando o comando: ${props.help.name}`);
-    if (props.init) {
-      props.init(client);
-    }
-    client.commands.set(props.help.name, props);
-  } catch (e) {
-    console.error('[ERRO]', `Falha ao carregar o comando ${f}: ${e}`);
-  }
-})
+const Discord = require('discord.js');
+const onMessage = require('./events/message.js');
+const onReady = require('./events/ready.js');
+const client = new Discord.Client();
 
 // Carregar eventos
-const evtFiles = readdirSync('./events/')
-evtFiles.forEach(f => {
-  const eventName = f.split('.')[0];
-  const event = require(`./events/${f}`);
-  console.log('[LOG]', `Carregando o evento: ${eventName}`);
-  client.on(eventName, event.bind(null, client));
-})
-
-client.on('error', (err) => {
-  console.log('[ERRO]', err)
-});
+client.on('ready', () => onReady(client));
+client.on('disconnect', () => console.log('Desconectado, tentando reconectar'));
+client.on('reconnecting', () => console.log('Reconectando'));
+client.on('message', async message => onMessage(client, message));
+client.on('error', console.error);
+client.on('warn', console.warn);
 
 client.login(process.env.AUTH_TOKEN);
