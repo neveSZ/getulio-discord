@@ -17,9 +17,10 @@ Bot criado com o objetivo de aprender um pouco sobre a API [Discord.js](https://
 
 ### Outros
 
-- ajuda
+- ~~ajuda~~
 - convite
 - entrar
+- informacoes
 - ping
 - sair
 

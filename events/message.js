@@ -3,6 +3,7 @@ const cmdAjuda = 0;
 const cmdContinuar = 0;
 const cmdConvite = require('../commands/convite.js');
 const cmdEntrar = require('../commands/entrar.js');
+const cmdInformacoes = require('../commands/informacoes.js');
 const cmdLista = 0;
 const cmdMisturar = 0;
 const cmdParar = 0;
@@ -36,6 +37,9 @@ async function onMessage(client, message) {
       break;
     case 'entrar':
       cmdEntrar(message);
+      break;
+    case 'informacoes':
+      cmdInformacoes(message);
       break;
     case 'ping':
       cmdPing(message);
