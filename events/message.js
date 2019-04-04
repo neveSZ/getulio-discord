@@ -6,7 +6,7 @@ const cmdEntrar = require('../commands/entrar.js');
 const cmdInformacoes = require('../commands/informacoes.js');
 const cmdLista = 0;
 const cmdMisturar = 0;
-const cmdParar = 0;
+const cmdParar = require('../commands/parar.js');
 const cmdPausar = 0;
 const cmdPing = require('../commands/ping.js');
 const cmdPular = 0;
@@ -14,6 +14,7 @@ const cmdRepetir = 0;
 const cmdSair = require('../commands/sair.js');
 const cmdTocar = require('../commands/tocar.js');
 const cmdVolume = 0;
+global.queue = new Map();
 
 async function onMessage(client, message) {
   // Verificar se eh bot
@@ -40,6 +41,9 @@ async function onMessage(client, message) {
       break;
     case 'informacoes':
       cmdInformacoes(message);
+      break;
+    case 'parar':
+      cmdParar(message);
       break;
     case 'ping':
       cmdPing(message);

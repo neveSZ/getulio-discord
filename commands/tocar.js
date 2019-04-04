@@ -2,11 +2,10 @@ const Discord = require("discord.js");
 const YouTube = require('simple-youtube-api');
 const ytdl = require("ytdl-core-discord");
 const cmdEntrar = require('./entrar.js');
-const queue = new Map();
 const youtube = new YouTube(process.env.YTB_API_KEY);
 
 // Procura a musica no youtube e devolve uma lista de musicas para selecionar
-async function cmdTocar(message, args, queue) {
+async function cmdTocar(message, args) {
     // Verificar se o usuario esta em um canal de voz
     if (!message.member.voiceChannel)
         return message.channel.send(`${message.author}\nVocê precisa estar em um canal de voz para usar este comando`);
@@ -73,11 +72,11 @@ async function cmdTocar(message, args, queue) {
 }
 
 async function playMusic(guild, music) {
-    const serverQueue = queue.get(guild.id);
+    const serverQueue = global.queue.get(guild.id);
     // Verificar se tem musica na fila
     if (!music) {
         serverQueue.connection.channel.leave();
-        queue.delete(guild.id);
+        global.queue.delete(guild.id);
         return;
     }
 
@@ -98,7 +97,7 @@ async function addMusic(video, message, connection) {
         url: video.url
     };
 
-    const serverQueue = queue.get(message.guild.id);
+    const serverQueue = global.queue.get(message.guild.id);
 
     // Verificar se tem fila
     if (!serverQueue) {
@@ -109,7 +108,7 @@ async function addMusic(video, message, connection) {
             volume: 10,
             playing: true
         };
-        queue.set(message.guild.id, queueConstruct);
+        global.queue.set(message.guild.id, queueConstruct);
         queueConstruct.musics.push(music);
         // Ja que eh o primeiro da fila tocar
         playMusic(message.guild, queueConstruct.musics[0]);
