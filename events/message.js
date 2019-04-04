@@ -1,13 +1,13 @@
 // cmd = 0 ainda estao sem funcao
 const cmdAjuda = 0;
-const cmdContinuar = 0;
+const cmdContinuar = require('../commands/continuar.js');
 const cmdConvite = require('../commands/convite.js');
 const cmdEntrar = require('../commands/entrar.js');
 const cmdInformacoes = require('../commands/informacoes.js');
 const cmdLista = 0;
 const cmdMisturar = 0;
 const cmdParar = require('../commands/parar.js');
-const cmdPausar = 0;
+const cmdPausar = require('../commands/pausar.js');
 const cmdPing = require('../commands/ping.js');
 const cmdPular = 0;
 const cmdRepetir = 0;
@@ -36,6 +36,9 @@ async function onMessage(client, message) {
     case 'convite':
       cmdConvite(message);
       break;
+    case 'continuar':
+      cmdContinuar(message);
+      break;
     case 'entrar':
       cmdEntrar(message);
       break;
@@ -44,6 +47,9 @@ async function onMessage(client, message) {
       break;
     case 'parar':
       cmdParar(message);
+      break;
+    case 'pausar':
+      cmdPausar(message);
       break;
     case 'ping':
       cmdPing(message);

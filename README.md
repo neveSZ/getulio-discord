@@ -6,10 +6,11 @@ Bot criado com o objetivo de aprender um pouco sobre a API [Discord.js](https://
 
 ### Música
 
+- continuar
 - ~~lista~~
 - ~~misturar~~
-- ~~parar~~
-- ~~pausar~~
+- parar
+- pausar
 - ~~pular~~
 - ~~repetir~~
 - ~~tocar~~
