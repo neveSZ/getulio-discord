@@ -29,8 +29,8 @@ async function onMessage(client, message) {
 
   // Separar argumentos e comando
   const command = message.content.toLowerCase().split(' ')[0].slice(process.env.PREFIX.length);
-  const args = message.content.toLowerCase().slice(command.length + process.env.PREFIX.length + 1);
-  
+  const args = message.content.slice(command.length + process.env.PREFIX.length + 1);
+
   // Verificar se o comando esta disponivel
   switch (command) {
     case 'convite':
