@@ -17,7 +17,7 @@ async function cmdVolume(message, args) {
 
     // Verificar se foi passado argumento
     if (!args)
-        return message.channel.send(`${message.author}\nO volume atual é ${serverQueue.volume}`);
+        return message.channel.send(`${message.author}\nVolume atual: ${serverQueue.volume}`);
     args = parseInt(args);
 
     // Verificar se eh um inteiro
@@ -25,11 +25,12 @@ async function cmdVolume(message, args) {
         return message.channel.send(`${message.author}\nVocê precisa passar um numero`);
 
     // Verificar se esta dentro do limite
-    if (args < 0 && args > 200)
+    if (args < 0 || args > 200)
         return message.channel.send(`${message.author}\nVocê precisa passar um numero entre 1 e 200`);
 
     serverQueue.volume = args;
     serverQueue.connection.dispatcher.setVolume(args / 100);
+    message.channel.send(`${message.author}\nNovo volume: ${args}`);
 }
 
 module.exports = cmdVolume;
