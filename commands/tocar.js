@@ -58,6 +58,10 @@ async function cmdTocar(message, args) {
         return;
     }
 
+    // Adicionar https caso nao tenha
+    if (!ytbMatch[1])
+        args = 'https://' + args;
+
     // Verificar se eh playlist
     const playlistReg = /^.*(list=)([^#\&\?]*).*/;
     var playlistMatch = args.match(playlistReg);
@@ -66,8 +70,14 @@ async function cmdTocar(message, args) {
         return console.log('url playlist');
 
     } else {
-        // TODO: ADICIONAR A LISTA DE REPRODUCAO
-        return console.log('url musica unica');
+        // Pesquisar link no youtube para pegar informacoes
+        var video = await youtube.getVideo(args);
+
+        // Verificar se teve resultado
+        if (!video)
+            return message.channel.send(`${message.author}\nNão encontrei resultado`);
+
+        await addMusic(video, message, message.guild.voiceConnection);
     }
 }
 
