@@ -3,6 +3,10 @@ async function cmdVolume(message, args) {
     const serverQueue = global.queue.get(message.guild.id);
     const voiceChannel = message.member.voiceChannel;
 
+    // Verificar se esta tocando algo
+    if (!serverQueue)
+        return message.channel.send(`${message.author}\nNão estou tocando nada`);
+
     // Verificar se o membro esta em um canal de voz
     if (!voiceChannel)
         return message.channel.send(`${message.author}\nVocê precisa estar em um canal de voz para usar este comando`);
