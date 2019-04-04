@@ -13,7 +13,7 @@ const cmdPular = 0;
 const cmdRepetir = 0;
 const cmdSair = require('../commands/sair.js');
 const cmdTocar = require('../commands/tocar.js');
-const cmdVolume = 0;
+const cmdVolume = require('../commands/volume.js');
 global.queue = new Map();
 
 async function onMessage(client, message) {
@@ -59,6 +59,9 @@ async function onMessage(client, message) {
       break;
     case 'tocar':
       cmdTocar(message, args);
+      break;
+    case 'volume':
+      cmdVolume(message, args);
       break;
     default:
       return message.channel.send(`${message.author}\nComando não disponível. Digite ${process.env.PREFIX}ajuda para ver a lista de comandos.`);

@@ -3,6 +3,7 @@ const YouTube = require('simple-youtube-api');
 const ytdl = require("ytdl-core-discord");
 const cmdEntrar = require('./entrar.js');
 const youtube = new YouTube(process.env.YTB_API_KEY);
+const prism = require('prism-media');
 
 // Procura a musica no youtube e devolve uma lista de musicas para selecionar
 async function cmdTocar(message, args) {
@@ -91,13 +92,19 @@ async function playMusic(guild, music) {
     }
 
     // Tocar musica
-    const dispatcher = serverQueue.connection.playOpusStream(await ytdl(music.url))
+    const input = await ytdl(music.url);
+    const pcm = input.pipe(new prism.opus.Decoder({
+        rate: 48000,
+        channels: 2,
+        frameSize: 960
+    }));
+    const dispatcher = serverQueue.connection.playConvertedStream(pcm)
         .on('end', reason => {
             serverQueue.musics.shift();
             playMusic(guild, serverQueue.musics[0]);
         })
         .on('error', error => console.error(error));
-    dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
+    dispatcher.setVolume(serverQueue.volume / 100);
     serverQueue.textChannel.send(`Tocando: **${music.title}**`);
 };
 
@@ -115,7 +122,7 @@ async function addMusic(video, message, connection) {
             textChannel: message.channel,
             connection: connection,
             musics: [],
-            volume: 10,
+            volume: 50,
             playing: true
         };
         global.queue.set(message.guild.id, queueConstruct);
