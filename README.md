@@ -14,7 +14,7 @@ Bot criado com o objetivo de aprender um pouco sobre a API [Discord.js](https://
 - ~~pular~~
 - ~~repetir~~
 - tocar(ainda não funcional com playlists do YouTube)
-- ~~volume~~
+- volume
 
 ### Outros
 
