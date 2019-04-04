@@ -13,7 +13,7 @@ Bot criado com o objetivo de aprender um pouco sobre a API [Discord.js](https://
 - pausar
 - ~~pular~~
 - ~~repetir~~
-- ~~tocar~~
+- tocar(Ainda não funcional com links)
 - ~~volume~~
 
 ### Outros
@@ -25,10 +25,12 @@ Bot criado com o objetivo de aprender um pouco sobre a API [Discord.js](https://
 - ping
 - sair
 
-## Ferramentas Utilizadas
+## Tecnologias Utilizadas
 
+- [Discord.js](https://www.npmjs.com/package/discord.js)
 - [Node.js](https://nodejs.org/en/)
-- [discord.js](https://www.npmjs.com/package/discord.js)
+- [YouTube Data API](https://developers.google.com/youtube/v3/)
+
 
 ## Deploy para o Heroku
 
