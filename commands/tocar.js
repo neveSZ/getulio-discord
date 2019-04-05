@@ -99,7 +99,7 @@ async function playMusic(guild, music) {
         frameSize: 960
     }));
     const dispatcher = serverQueue.connection.playConvertedStream(pcm)
-        .on('end', reason => {
+        .on('end', () => {
             serverQueue.musics.shift();
             playMusic(guild, serverQueue.musics[0]);
         })

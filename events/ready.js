@@ -2,7 +2,7 @@
 async function onReady(client) {
     console.log(`O Bot foi iniciado, atualmente estou em ${client.guilds.size} servidor(es), auxiliando ${client.users.size} usuarios`);
     // Status do bot
-    client.user.setActivity('eu sei tudo!!!', {
+    client.user.setActivity('conhecimento tácito', {
         type: 'STREAMING',
         url: 'https://www.twitch.tv/neveSZcs'
     });
