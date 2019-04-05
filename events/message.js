@@ -69,13 +69,10 @@ async function onMessage(client, message) {
       cmdVolume(message, args);
       break;
     default:
-      return message.channel.send(
-        `${message.author}\nComando não disponível. Digite ${
-              process.env.PREFIX}ajuda para ver a lista de comandos.`);
+      return message.channel.send(`${message.author}\nComando não disponível. Digite ${process.env.PREFIX}ajuda para ver a lista de comandos.`);
       break;
   }
-  console.log(`O usuario ${message.author.username}(${
-      message.author.id}) executou o comando ${command}`);
+  console.log(`O usuario ${message.author.username}(${message.author.id}) executou o comando ${command}`);
 }
 
 
