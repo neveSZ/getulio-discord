@@ -9,7 +9,7 @@ const cmdMisturar = 0;
 const cmdParar = require('../commands/parar.js');
 const cmdPausar = require('../commands/pausar.js');
 const cmdPing = require('../commands/ping.js');
-const cmdPular = 0;
+const cmdPular = require('../commands/pular.js');
 const cmdRepetir = 0;
 const cmdSair = require('../commands/sair.js');
 const cmdTocar = require('../commands/tocar.js');
@@ -28,8 +28,10 @@ async function onMessage(client, message) {
   if (message.content.indexOf(process.env.PREFIX) !== 0) return;
 
   // Separar argumentos e comando
-  const command = message.content.toLowerCase().split(' ')[0].slice(process.env.PREFIX.length);
-  const args = message.content.slice(command.length + process.env.PREFIX.length + 1);
+  const command = message.content.toLowerCase().split(' ')[0].slice(
+    process.env.PREFIX.length);
+  const args =
+    message.content.slice(command.length + process.env.PREFIX.length + 1);
 
   // Verificar se o comando esta disponivel
   switch (command) {
@@ -54,6 +56,9 @@ async function onMessage(client, message) {
     case 'ping':
       cmdPing(message);
       break;
+    case 'pular':
+      cmdPular(message);
+      break;
     case 'sair':
       cmdSair(message);
       break;
@@ -64,10 +69,13 @@ async function onMessage(client, message) {
       cmdVolume(message, args);
       break;
     default:
-      return message.channel.send(`${message.author}\nComando não disponível. Digite ${process.env.PREFIX}ajuda para ver a lista de comandos.`);
+      return message.channel.send(
+        `${message.author}\nComando não disponível. Digite ${
+              process.env.PREFIX}ajuda para ver a lista de comandos.`);
       break;
   }
-  console.log(`O usuario ${message.author.username}(${message.author.id}) executou o comando ${command}`);
+  console.log(`O usuario ${message.author.username}(${
+      message.author.id}) executou o comando ${command}`);
 }
 
 
