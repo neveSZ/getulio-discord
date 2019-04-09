@@ -111,8 +111,11 @@ async function playMusic(guild, music) {
             // Verificar se eh para repetir a musica atual
             if (!serverQueue.repeat)
                 serverQueue.musics.shift();
-            else if (pular)
+
+            // Se utilizado o comando pular
+            else if (pular == global.PULAR)
                 serverQueue.musics.shift();
+
             playMusic(guild, serverQueue.musics[0]);
         })
         .on('error', error => console.error(error));

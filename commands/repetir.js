@@ -20,10 +20,10 @@ async function cmdRepetir(message) {
         return message.channel.send(`${message.author}\nNão estou tocando nada`);
 
     serverQueue.repeat = !serverQueue.repeat;
-    if (serverQueue)
-        message.channel.send('Repeticão de musica ativada');
+    if (serverQueue.repeat)
+        message.channel.send('Repeticão de musica ativado');
     else
-        message.channel.send('Repeticão de musica ativada');
+        message.channel.send('Repeticão de musica desativado');
 }
 
 module.exports = cmdRepetir;

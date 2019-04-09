@@ -4,6 +4,7 @@ const Discord = require('discord.js');
 const onMessage = require('./events/message.js');
 const onReady = require('./events/ready.js');
 const client = new Discord.Client();
+global.CODE_PULAR = 109;
 
 // Carregar eventos
 client.on('ready', () => onReady(client));

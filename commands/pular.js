@@ -19,7 +19,7 @@ async function cmdPular(message) {
     if (!serverQueue)
         return message.channel.send(`${message.author}\nNão estou tocando nada`);
 
-    serverQueue.connection.dispatcher.end(true);
+    serverQueue.connection.dispatcher.end(global.CODE_PULAR);
     message.channel.send(`${message.author}\nA musica foi pulada`);
 }
 
