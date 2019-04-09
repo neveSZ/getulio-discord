@@ -91,6 +91,7 @@ async function cmdTocar(message, args) {
 
 async function playMusic(guild, music) {
     const serverQueue = global.queue.get(guild.id);
+
     // Verificar se tem musica na fila
     if (!music) {
         serverQueue.connection.channel.leave();
@@ -106,8 +107,12 @@ async function playMusic(guild, music) {
         frameSize: 960
     }));
     const dispatcher = serverQueue.connection.playConvertedStream(pcm)
-        .on('end', () => {
-            serverQueue.musics.shift();
+        .on('end', pular => {
+            // Verificar se eh para repetir a musica atual
+            if (!serverQueue.repeat)
+                serverQueue.musics.shift();
+            else if (pular)
+                serverQueue.musics.shift();
             playMusic(guild, serverQueue.musics[0]);
         })
         .on('error', error => console.error(error));
@@ -126,6 +131,7 @@ async function addMusic(video, message, connection) {
             connection: connection,
             musics: [video],
             volume: 50,
+            repeat: false,
             playing: true
         };
         global.queue.set(message.guild.id, queueConstruct);
@@ -135,8 +141,8 @@ async function addMusic(video, message, connection) {
 
     // Caso contrario colocar na lista de reproducao
     else {
-        serverQueue.musics.push(music);
-        return message.channel.send(`A musica **${music.title}** foi adicionada a lista de reproducao.`);
+        serverQueue.musics.push(video);
+        return message.channel.send(`A musica **${video.title}** foi adicionada a lista de reproducao.`);
     }
     return;
 }
@@ -152,6 +158,7 @@ async function addPlaylist(videos, message, connection) {
             connection: connection,
             musics: videos,
             volume: 50,
+            repeat: false,
             playing: true
         };
         global.queue.set(message.guild.id, queueConstruct);

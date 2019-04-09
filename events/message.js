@@ -10,7 +10,7 @@ const cmdParar = require('../commands/parar.js');
 const cmdPausar = require('../commands/pausar.js');
 const cmdPing = require('../commands/ping.js');
 const cmdPular = require('../commands/pular.js');
-const cmdRepetir = 0;
+const cmdRepetir = require('../commands/repetir.js');
 const cmdSair = require('../commands/sair.js');
 const cmdTocar = require('../commands/tocar.js');
 const cmdVolume = require('../commands/volume.js');
@@ -58,6 +58,9 @@ async function onMessage(client, message) {
       break;
     case 'pular':
       cmdPular(message);
+      break;
+    case 'repetir':
+      cmdRepetir(message);
       break;
     case 'sair':
       cmdSair(message);
