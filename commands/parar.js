@@ -8,6 +8,7 @@ async function cmdParar(message) {
         return message.channel.send(`${message.author}\nVocê precisa estar em um canal de voz para usar este comando`);
     if (!serverQueue)
         return message.channel.send('Não estou tocando nada');
+    serverQueue.musics = [];
     serverQueue.connection.dispatcher.end();
 }
 
