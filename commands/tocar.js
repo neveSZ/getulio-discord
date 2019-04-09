@@ -67,11 +67,14 @@ async function cmdTocar(message, args) {
     const playlistMatch = args.match(playlistReg);
     if (playlistMatch) {
         const playlist = await youtube.getPlaylist(args);
-        const videos = await playlist.getVideos();
+        // Verificar se teve resultados
+        if (!playlist)
+            return message.channel.send(`${message.author}\nNão encontrei esta playlist`);
 
-        // Verificar se teve resultado
-        if (!video)
-            return message.channel.send(`${message.author}\nNão encontrei resultado`);
+        const videos = await playlist.getVideos();
+        // Verificar se teve resultados
+        if (!videos)
+            return message.channel.send(`${message.author}\nPlaylist vazia`);
 
         await addPlaylist(videos, message, message.guild.voiceConnection);
     } else {
