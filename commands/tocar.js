@@ -22,10 +22,10 @@ async function cmdTocar(message, args) {
 
     // Verificar se eh link do youtube
     const ytbReg = /^(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/;
-    var ytbMatch = args.match(ytbReg);
+    const ytbMatch = args.match(ytbReg);
     if (!ytbMatch) {
         // Pesquisar no youtube
-        var videos = await youtube.searchVideos(args, 10, {
+        const videos = await youtube.searchVideos(args, 10, {
             regionCode: 'BR'
         });
 
@@ -35,15 +35,14 @@ async function cmdTocar(message, args) {
 
         // Listar opcoes
         const embed = new Discord.RichEmbed().setTitle("**Selecione uma opção de 1 a 10**");
-        for (var i = 0; i < videos.length; i++)
-            embed.addField(`**${i + 1} - ** ${videos[i].title}`, `${videos[i].url}`);
+        videos.forEach((video, i) => embed.addField(`**${i + 1} - ** ${video.title}`, `${video.url}`));
         message.channel.send({
             embed
         });
 
         // Aguardar a resposta do usuario
         const filter = msg => msg.author.id == message.author.id;
-        var response = await message.channel.awaitMessages(filter, {
+        const response = await message.channel.awaitMessages(filter, {
             max: 1,
             time: 10000,
             errors: ["time"]
@@ -65,14 +64,19 @@ async function cmdTocar(message, args) {
 
     // Verificar se eh playlist
     const playlistReg = /^.*(list=)([^#\&\?]*).*/;
-    var playlistMatch = args.match(playlistReg);
+    const playlistMatch = args.match(playlistReg);
     if (playlistMatch) {
-        // TODO: ADICIONAR A PLAYLIST NA LISTA DE REPRODUCAO
-        return console.log('url playlist');
+        const playlist = await youtube.getPlaylist(args);
+        const videos = await playlist.getVideos();
 
+        // Verificar se teve resultado
+        if (!video)
+            return message.channel.send(`${message.author}\nNão encontrei resultado`);
+
+        await addPlaylist(videos, message, message.guild.voiceConnection);
     } else {
         // Pesquisar link no youtube para pegar informacoes
-        var video = await youtube.getVideo(args);
+        const video = await youtube.getVideo(args);
 
         // Verificar se teve resultado
         if (!video)
@@ -109,10 +113,6 @@ async function playMusic(guild, music) {
 };
 
 async function addMusic(video, message, connection) {
-    const music = {
-        title: video.title,
-        url: video.url
-    };
 
     const serverQueue = global.queue.get(message.guild.id);
 
@@ -121,12 +121,11 @@ async function addMusic(video, message, connection) {
         const queueConstruct = {
             textChannel: message.channel,
             connection: connection,
-            musics: [],
+            musics: [video],
             volume: 50,
             playing: true
         };
         global.queue.set(message.guild.id, queueConstruct);
-        queueConstruct.musics.push(music);
         // Ja que eh o primeiro da fila tocar
         playMusic(message.guild, queueConstruct.musics[0]);
     }
@@ -137,6 +136,27 @@ async function addMusic(video, message, connection) {
         return message.channel.send(`A musica **${music.title}** foi adicionada a lista de reproducao.`);
     }
     return;
+}
+
+async function addPlaylist(videos, message, connection) {
+
+    const serverQueue = global.queue.get(message.guild.id);
+
+    // Verificar se tem fila
+    if (!serverQueue) {
+        const queueConstruct = {
+            textChannel: message.channel,
+            connection: connection,
+            musics: videos,
+            volume: 50,
+            playing: true
+        };
+        global.queue.set(message.guild.id, queueConstruct);
+        playMusic(message.guild, queueConstruct.musics[0]);
+    } else {
+        videos.forEach(video => serverQueue.musics.push(video));
+    }
+    return message.channel.send(`Foram adicionadas **${videos.length}** musicas na fila`);
 }
 
 module.exports = cmdTocar;
