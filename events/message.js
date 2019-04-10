@@ -4,7 +4,7 @@ const cmdContinuar = require('../commands/continuar.js');
 const cmdConvite = require('../commands/convite.js');
 const cmdEntrar = require('../commands/entrar.js');
 const cmdInformacoes = require('../commands/informacoes.js');
-const cmdLista = 0;
+const cmdLista = require('../commands/lista.js');
 const cmdMisturar = require('../commands/misturar.js');
 const cmdParar = require('../commands/parar.js');
 const cmdPausar = require('../commands/pausar.js');
@@ -45,6 +45,9 @@ async function onMessage(client, message) {
       break;
     case 'informacoes':
       cmdInformacoes(message);
+      break;
+    case 'lista':
+      cmdLista(message, serverQueue);
       break;
     case 'misturar':
       cmdMisturar(message, serverQueue);

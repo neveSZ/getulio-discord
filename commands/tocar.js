@@ -35,7 +35,7 @@ async function cmdTocar(message, args, queues) {
 
         // Listar opcoes
         var embed = new Discord.RichEmbed().setTitle("**Selecione uma opção de 1 a 10**");
-        videos.forEach((video, i) => embed.addField(`**${i + 1} - ** ${video.title}`, `${video.url}`));
+        videos.forEach((video, i) => embed.addField(`**${i + 1} - ** ${video.title}`, video.url));
         message.channel.send({
             embed
         });
