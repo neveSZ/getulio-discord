@@ -1,5 +1,5 @@
 // Sai do canal atual
-async function cmdSair(message) {
+async function cmdSair(message, queues) {
   const voiceChannel = message.member.voiceChannel;
   // Verificar se o membro esta em um canal de voz
   if (!voiceChannel)
@@ -12,7 +12,9 @@ async function cmdSair(message) {
   // Verificar se estao no mesmo canal de voz
   if (voiceChannel.id !== message.guild.voiceConnection.channel.id)
     return message.channel.send(`${message.author}\nVocê precisa estar no mesmo canal do bot para usar este comando`);
+
   voiceChannel.leave();
+  queues.delete(message.guild.id);
   console.log(`Saiu do canal #${voiceChannel.name}`);
 }
 module.exports = cmdSair;

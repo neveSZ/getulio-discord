@@ -6,7 +6,7 @@ const youtube = new YouTube(process.env.YTB_API_KEY);
 const prism = require('prism-media');
 
 // Procura a musica no youtube e devolve uma lista de musicas para selecionar
-async function cmdTocar(message, args) {
+async function cmdTocar(message, args, queues) {
     // Verificar se o usuario esta em um canal de voz
     if (!message.member.voiceChannel)
         return message.channel.send(`${message.author}\nVocê precisa estar em um canal de voz para usar este comando`);
@@ -18,7 +18,7 @@ async function cmdTocar(message, args) {
     // Verificar se o bot ja esta em um canal de voz
     if (!message.guild.voiceConnection)
         // Caso nao esteja, entrar no canal de voz
-        await cmdEntrar(message);
+        await cmdEntrar(message, queues);
 
     // Verificar se eh link do youtube
     const ytbReg = /^(https?\:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/;
@@ -54,7 +54,7 @@ async function cmdTocar(message, args) {
             return message.channel.send("Opção inválida");
 
         // Passar musica para lista
-        await addMusic(videos[option], message, message.guild.voiceConnection);
+        await addMusic(videos[option], message, queues);
         return;
     }
 
@@ -76,7 +76,7 @@ async function cmdTocar(message, args) {
         if (!videos)
             return message.channel.send(`${message.author}\nPlaylist vazia`);
 
-        await addPlaylist(videos, message, message.guild.voiceConnection);
+        await addPlaylist(videos, message, queues);
     } else {
         // Pesquisar link no youtube para pegar informacoes
         const video = await youtube.getVideo(args);
@@ -85,17 +85,17 @@ async function cmdTocar(message, args) {
         if (!video)
             return message.channel.send(`${message.author}\nNão encontrei resultado`);
 
-        await addMusic(video, message, message.guild.voiceConnection);
+        await addMusic(video, message, queues);
     }
 }
 
-async function playMusic(guild, music) {
-    const serverQueue = global.queue.get(guild.id);
+async function playMusic(guild, music, queues) {
+    var serverQueue = queues.get(guild.id);
 
     // Verificar se tem musica na fila
     if (!music) {
         serverQueue.connection.channel.leave();
-        global.queue.delete(guild.id);
+        queues.delete(guild.id);
         return;
     }
 
@@ -106,6 +106,7 @@ async function playMusic(guild, music) {
         channels: 2,
         frameSize: 960
     }));
+    serverQueue.playing = true;
     const dispatcher = serverQueue.connection.playConvertedStream(pcm)
         .on('end', pular => {
             // Verificar se eh para repetir a musica atual
@@ -116,56 +117,28 @@ async function playMusic(guild, music) {
             else if (pular == global.PULAR)
                 serverQueue.musics.shift();
 
-            playMusic(guild, serverQueue.musics[0]);
+            playMusic(guild, serverQueue.musics[0], queues);
         })
         .on('error', error => console.error(error));
     dispatcher.setVolume(serverQueue.volume / 100);
     serverQueue.textChannel.send(`Tocando: **${music.title}**`);
 };
 
-async function addMusic(video, message, connection) {
-
-    const serverQueue = global.queue.get(message.guild.id);
-
-    // Verificar se tem fila
-    if (!serverQueue) {
-        const queueConstruct = {
-            textChannel: message.channel,
-            connection: connection,
-            musics: [video],
-            volume: 50,
-            repeat: false,
-            playing: true
-        };
-        global.queue.set(message.guild.id, queueConstruct);
-        // Ja que eh o primeiro da fila tocar
-        playMusic(message.guild, queueConstruct.musics[0]);
-    }
-
-    // Caso contrario colocar na lista de reproducao
-    else {
-        serverQueue.musics.push(video);
-        return message.channel.send(`A musica **${video.title}** foi adicionada a lista de reproducao.`);
-    }
-    return;
+async function addMusic(video, message, queues) {
+    var serverQueue = queues.get(message.guild.id);
+    serverQueue.musics.push(video);
+    // Se for a primeira da fila
+    if (!serverQueue.musics[1])
+        return playMusic(message.guild, serverQueue.musics[0], queues);
+    return message.channel.send(`A musica **${video.title}** foi adicionada a lista de reproducao.`);
 }
 
-async function addPlaylist(videos, message, connection) {
-
-    const serverQueue = global.queue.get(message.guild.id);
-
+async function addPlaylist(videos, message, queues) {
+    var serverQueue = queues.get(message.guild.id);
     // Verificar se tem fila
-    if (!serverQueue) {
-        const queueConstruct = {
-            textChannel: message.channel,
-            connection: connection,
-            musics: videos,
-            volume: 50,
-            repeat: false,
-            playing: true
-        };
-        global.queue.set(message.guild.id, queueConstruct);
-        playMusic(message.guild, queueConstruct.musics[0]);
+    if (!serverQueue.musics[0]) {
+        serverQueue.musics = videos;
+        playMusic(message.guild, serverQueue.musics[0], queues);
     } else {
         videos.forEach(video => serverQueue.musics.push(video));
     }

@@ -14,7 +14,8 @@ const cmdRepetir = require('../commands/repetir.js');
 const cmdSair = require('../commands/sair.js');
 const cmdTocar = require('../commands/tocar.js');
 const cmdVolume = require('../commands/volume.js');
-global.queue = new Map();
+
+var queues = new Map();
 
 async function onMessage(client, message) {
   // Verificar se eh bot
@@ -28,51 +29,49 @@ async function onMessage(client, message) {
   if (message.content.indexOf(process.env.PREFIX) !== 0) return;
 
   // Separar argumentos e comando
-  const command = message.content.toLowerCase().split(' ')[0].slice(
-    process.env.PREFIX.length);
-  const args =
-    message.content.slice(command.length + process.env.PREFIX.length + 1);
-
+  const command = message.content.toLowerCase().split(' ')[0].slice(process.env.PREFIX.length);
+  const args = message.content.slice(command.length + process.env.PREFIX.length + 1);
+  var serverQueue = queues.get(message.guild.id);
   // Verificar se o comando esta disponivel
   switch (command) {
     case 'convite':
       cmdConvite(message);
       break;
     case 'continuar':
-      cmdContinuar(message);
+      cmdContinuar(message, serverQueue);
       break;
     case 'entrar':
-      cmdEntrar(message);
+      cmdEntrar(message, queues);
       break;
     case 'informacoes':
       cmdInformacoes(message);
       break;
     case 'misturar':
-      cmdMisturar(message);
+      cmdMisturar(message, serverQueue);
       break;
     case 'parar':
-      cmdParar(message);
+      cmdParar(message, serverQueue);
       break;
     case 'pausar':
-      cmdPausar(message);
+      cmdPausar(message, serverQueue);
       break;
     case 'ping':
       cmdPing(message);
       break;
     case 'pular':
-      cmdPular(message);
+      cmdPular(message, serverQueue);
       break;
     case 'repetir':
-      cmdRepetir(message);
+      cmdRepetir(message, serverQueue);
       break;
     case 'sair':
-      cmdSair(message);
+      cmdSair(message, queues);
       break;
     case 'tocar':
-      cmdTocar(message, args);
+      cmdTocar(message, args, queues);
       break;
     case 'volume':
-      cmdVolume(message, args);
+      cmdVolume(message, args, serverQueue);
       break;
     default:
       return message.channel.send(`${message.author}\nComando não disponível. Digite ${process.env.PREFIX}ajuda para ver a lista de comandos.`);

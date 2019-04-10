@@ -1,6 +1,5 @@
 // Repete a musica atual
-async function cmdRepetir(message) {
-    const serverQueue = global.queue.get(message.guild.id);
+async function cmdRepetir(message, serverQueue) {
     const voiceChannel = message.member.voiceChannel;
 
     // Verificar se o membro esta em um canal de voz
@@ -15,9 +14,9 @@ async function cmdRepetir(message) {
     if (voiceChannel.id !== message.guild.voiceConnection.channel.id)
         return message.channel.send(`${message.author}\nVocê precisa estar no mesmo canal do bot para usar este comando`);
 
-    // Verificar se esta tocando algo
-    if (!serverQueue)
-        return message.channel.send(`${message.author}\nNão estou tocando nada`);
+    // Verificar se tem algo na lista
+    if (!serverQueue.musics[0])
+        return message.channel.send('Não estou tocando nada');
 
     serverQueue.repeat = !serverQueue.repeat;
     if (serverQueue.repeat)

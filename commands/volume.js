@@ -1,11 +1,6 @@
 // Define o volume do bot
-async function cmdVolume(message, args) {
-    const serverQueue = global.queue.get(message.guild.id);
+async function cmdVolume(message, args, serverQueue) {
     const voiceChannel = message.member.voiceChannel;
-
-    // Verificar se esta tocando algo
-    if (!serverQueue)
-        return message.channel.send(`${message.author}\nNão estou tocando nada`);
 
     // Verificar se o membro esta em um canal de voz
     if (!voiceChannel)
@@ -33,7 +28,8 @@ async function cmdVolume(message, args) {
         return message.channel.send(`${message.author}\nVocê precisa passar um numero entre 1 e 200`);
 
     serverQueue.volume = args;
-    serverQueue.connection.dispatcher.setVolume(args / 100);
+    if (serverQueue.playing)
+        serverQueue.connection.dispatcher.setVolume(args / 100);
     message.channel.send(`${message.author}\nNovo volume: ${args}`);
 }
 

@@ -1,6 +1,5 @@
 // Continuar a reproduzir
-async function cmdContinuar(message) {
-    const serverQueue = global.queue.get(message.guild.id);
+async function cmdContinuar(message, serverQueue) {
     const voiceChannel = message.member.voiceChannel;
 
     // Verificar se o membro esta em um canal de voz
@@ -15,8 +14,8 @@ async function cmdContinuar(message) {
     if (voiceChannel.id !== message.guild.voiceConnection.channel.id)
         return message.channel.send(`${message.author}\nVocê precisa estar no mesmo canal do bot para usar este comando`);
 
-    // Verificar se esta tocando musica
-    if (!serverQueue)
+    // Verificar se tem alguma musica na lista
+    if (!serverQueue.musics[0])
         return message.channel.send(`${message.author}\nNao existe lista de reproducao`);
 
     // Verificar se tem algo pausado

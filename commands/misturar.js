@@ -1,6 +1,5 @@
 // Mistura as musicas atuais
-async function cmdMisturar(message) {
-    const serverQueue = global.queue.get(message.guild.id);
+async function cmdMisturar(message, serverQueue) {
     const voiceChannel = message.member.voiceChannel;
     const musics = serverQueue.musics;
 
@@ -16,13 +15,9 @@ async function cmdMisturar(message) {
     if (voiceChannel.id !== message.guild.voiceConnection.channel.id)
         return message.channel.send(`${message.author}\nVocê precisa estar no mesmo canal do bot para usar este comando`);
 
-    // Verificar se esta tocando algo
-    if (!serverQueue)
-        return message.channel.send(`${message.author}\nNão estou tocando nada`);
-
-    // Verificar se esta tocando algo
+    // Verificar se esta tocando mais de duas musicas
     if (!musics[2])
-        return message.channel.send(`${message.author}\nNão eh possivel misturar somente uma musica`);
+        return message.channel.send(`${message.author}\nNão eh possivel misturar uma lista com menos de tres musicas`);
 
     // Misturar a array
     for (let i = musics.length - 1; i > 1; i--) {

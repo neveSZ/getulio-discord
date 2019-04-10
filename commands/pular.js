@@ -1,6 +1,5 @@
 // Pula para a proxima musica
-async function cmdPular(message) {
-    const serverQueue = global.queue.get(message.guild.id);
+async function cmdPular(message, serverQueue) {
     const voiceChannel = message.member.voiceChannel;
 
     // Verificar se o membro esta em um canal de voz
@@ -15,9 +14,9 @@ async function cmdPular(message) {
     if (voiceChannel.id !== message.guild.voiceConnection.channel.id)
         return message.channel.send(`${message.author}\nVocê precisa estar no mesmo canal do bot para usar este comando`);
 
-    // Verificar se esta tocando algo
-    if (!serverQueue)
-        return message.channel.send(`${message.author}\nNão estou tocando nada`);
+    // Verificar se tem algo na lista
+    if (!serverQueue.musics[0])
+        return message.channel.send('Não estou tocando nada');
 
     serverQueue.connection.dispatcher.end(global.CODE_PULAR);
     message.channel.send(`${message.author}\nA musica foi pulada`);
