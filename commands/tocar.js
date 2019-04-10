@@ -34,7 +34,7 @@ async function cmdTocar(message, args, queues) {
             return message.channel.send(`${message.author}\nNão encontrei resultados`);
 
         // Listar opcoes
-        const embed = new Discord.RichEmbed().setTitle("**Selecione uma opção de 1 a 10**");
+        var embed = new Discord.RichEmbed().setTitle("**Selecione uma opção de 1 a 10**");
         videos.forEach((video, i) => embed.addField(`**${i + 1} - ** ${video.title}`, `${video.url}`));
         message.channel.send({
             embed
@@ -114,7 +114,7 @@ async function playMusic(guild, music, queues) {
                 serverQueue.musics.shift();
 
             // Se utilizado o comando pular
-            else if (pular == global.PULAR)
+            else if (pular == global.CODE_PULAR)
                 serverQueue.musics.shift();
 
             playMusic(guild, serverQueue.musics[0], queues);
