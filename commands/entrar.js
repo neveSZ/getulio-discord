@@ -14,7 +14,7 @@ async function cmdEntrar(message, queues) {
     return message.channel.send(`${message.author}\n${message.author}\nNão tenho permissão para falar neste canal`);
   }
 
-  voiceChannel.join().then(connection => {
+  await voiceChannel.join().then(connection => {
     console.log(`Conectado no canal #${voiceChannel.name}`);
     var queue = {
       textChannel: message.channel,
